@@ -132,6 +132,8 @@ MAIN_RT=`aws ec2 describe-route-tables --query 'RouteTables[*].RouteTableId' --f
 	
 log "HA NAT configuration parameters: Instance ID=$INSTANCE_ID, Region=$REGION, Availability Zone=$AVAILABILITY_ZONE, VPC=$VPC_ID"
 
+## Fix Name
+aws ec2 create-tags --resources ${INSTANCE_ID} --tags "Key=Name,Value=Autoscale-NAT-${AVAILABILITY_ZONE}"
 # Get list of subnets in same VPC and AZ that have tag network=private
 PRIVATE_SUBNETS="`aws ec2 describe-subnets --query 'Subnets[*].SubnetId' \
 --filters Name=availability-zone,Values=$AVAILABILITY_ZONE Name=vpc-id,Values=$VPC_ID Name=state,Values=available Name=tag:network,Values=private`"
@@ -162,6 +164,7 @@ done
 if [ $? -ne 0 ] ; then
 	die
 fi
+
 
 # Turn off source / destination check
 aws ec2 modify-instance-attribute --instance-id $INSTANCE_ID --source-dest-check "{\"Value\": false}" &&
