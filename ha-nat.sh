@@ -71,9 +71,9 @@ function die {
 yum -y update
 
 log "Installing Tropo SSH Keys"
-rpm -Uvh http://yum.voxeolabs.net.s3.amazonaws.com/pub/voxeolabs-0.0.1-1.x86_64.rpm || die
+rpm -Uvh http://yum.voxeolabs.net.s3.amazonaws.com/pub/voxeolabs-0.0.1-1.x86_64.rpm
 curl http://curl.haxx.se/ca/cacert.pem -o /etc/pki/tls/certs/ca-bundle.crt || die
-yum install vl-users  -y || die
+yum install vl-users  -y
 
 
 # Download JQ
